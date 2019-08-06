@@ -8,6 +8,7 @@ import sys
 import json
 
 def main ():
+    	
 	settings = ("fog-debug-linux","edge-debug-linux","cluster-debug-linux")
 	report_md_path = os.getenv("HOME") + "/work/report/report.md"
 
@@ -89,6 +90,7 @@ def main ():
 					k+=1
 		else:
 	    	# 오늘 날짜의 디렉토리가 없으면 report.md 파일 내의 현재 setting값과 관련된 부분에 NULL값을 넣어준다.
+			# test를 수행하지 않은 횟수를 세기 위해 사용하는 변수.
 			no_test_count += 1
 
 			for i in range(len(lines)):
