@@ -25,9 +25,10 @@ def main ():
 
 	# 오늘 테스트를 수행 여부 확인을 위한 변수
 	no_test_count = 0
+	# 날짜 변경을 위한 변수
 	date_count = 0
    	
-	# 오늘 날짜의 폴더를 찾기 위해 문자열 변수를  만든다.
+	# 오늘 날짜의 폴더를 찾기 위해 오늘 날짜 값을 갖는 문자열 변수를 만든다.
 	time_buffer = datetime.datetime.now()
 	targetFolder_name = time_buffer.strftime('%Y-%m-%d')	
 
@@ -44,19 +45,19 @@ def main ():
 		else:
 			edition_select = 3
 	
-		# 오늘 Daily test 결과 파일(Summary.json)이 들어있는 디렉토리 경로명을 가진 변수 생성	
-		setting_Folder_path = "/home/qa/QA/results/" + setting + "/"
+		# 오늘 Daily test 결과 파일(Summary.json)이 들어있는 디렉토리 경로명을 가진 변수 생성
+		setting_Folder_path = os.getenv("HOME") + "/QA/results/" + setting + "/"
 		targetFolder_path = setting_Folder_path + targetFolder_name
 
-		''' 가장 최근에 생성된 디렉토리와 그 직전의 디렉토리내의 summary.json 파일의 내용을 비교한다. 오늘 테스트 결과를 report.md에 반영한다. '''		
+		''' 가장 최근에 생성된 디렉토리와 그 직전의 디렉토리내의 summary.json 파일의 내용을 비교한다. 오늘 테스트 결과를 report.md에 반영한다. '''
 		if os.path.isdir(targetFolder_path) == True:
 	
-	    	# 오늘 생성된 daily test의 json 파일을 읽어온다.
+			# 오늘 생성된 daily test의 json 파일을 읽어온다.
 			with open(targetFolder_path + "/summary.json","r") as f:
 				targetFolder_json= json.load(f)
 	
 			# 오늘을 제외한 가장 최근 날짜의 jason 파일을 오늘 생성된 json 파일에서 읽어온다.
-			lastTargetFolder_path = setting_Folder_path + targetFolder_json["lastTargetFolder"] 
+			lastTargetFolder_path = setting_Folder_path + targetFolder_json["lastTargetFolder"]
 			with open(lastTargetFolder_path + "/summary.json","r") as f:
 				lastTargetFolder_json = json.load(f)
 			
@@ -73,10 +74,13 @@ def main ():
 			# 리스트를 작성해서 여기에 오늘 결과값과 직전 테스트의 결과값의 차를 json파일 내의 summary 순서대로 저장해둠. 
 			difference = []
 			for i in targetFolder_json["summary"]:
-				difference.append(targetFolder_json["summary"][i] - lastTargetFolder_json["summary"][i])
-	
+					if (targetFolder_json["summary"][i] - lastTargetFolder_json["summary"][i]) > 0:
+							difference.append("+"+str(targetFolder_json["summary"][i] - lastTargetFolder_json["summary"][i]))
+					else:
+							difference.append(str(targetFolder_json["summary"][i] - lastTargetFolder_json["summary"][i]))
+							
+			# report.md에 오늘 daily test의 값과 지난번 테스트와의 반영한다.
 			for i in range(len(lines)):
-    				 
 				if (i >= daily_test_result_start_line) and (i <= daily_test_result_end_line):
 					line_list = lines[i].split("|")
 					line_list[edition_select] = str(summary_list[j])
@@ -90,6 +94,7 @@ def main ():
 					k+=1
 		else:
 	    	# 오늘 날짜의 디렉토리가 없으면 report.md 파일 내의 현재 setting값과 관련된 부분에 NULL값을 넣어준다.
+
 			# test를 수행하지 않은 횟수를 세기 위해 사용하는 변수.
 			no_test_count += 1
 
