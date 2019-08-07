@@ -10,8 +10,9 @@ import json
 def main ():
     	
 	settings = ("fog-debug-linux","edge-debug-linux","cluster-debug-linux")
-	report_md_path = os.getenv("HOME") + "/work/report/report.md"
+	report_md_path = os.getenv("HOME") + "/work/report/test.md"
 	qa_machbase_com_address = "http://intra.machbase.com:7070/regress/"
+
 	# 이메일의 본문으로 사용할 파일(report.md)의 내용을 lines에 읽어둔다.
 	with open(report_md_path, "r" ) as f:
 		lines = f.readlines()
@@ -21,7 +22,7 @@ def main ():
 	daily_test_result_start_line = 6
 	daily_test_result_end_line = 12
 	differnce_start_line = 18
-	differnce_end_line = 24 
+	differnce_end_line = 24
 
 	# 오늘 테스트를 수행 여부 확인을 위한 변수
 	no_test_count = 0
@@ -48,12 +49,11 @@ def main ():
 		# 오늘 Daily test 결과 파일(Summary.json)이 들어있는 디렉토리 경로명을 가진 변수 생성
 		setting_Folder_path = os.getenv("HOME") + "/QA/results/" + setting + "/"
 		targetFolder_path = setting_Folder_path + targetFolder_name
-
+		
 		# 셋팅 주소 링크를 바꿔준다.
 		address_list = lines[4].split("|")
 		address_list[edition_select] = "[[" + setting + "]" + "(" + qa_machbase_com_address + setting + "/" + targetFolder_name + ")" + "]"
 		lines[4] = address_list[0] + "|" + address_list[1] + "|" + address_list[2] + "|" + address_list[3] + "|" + address_list[4] 
-		
 		''' 가장 최근에 생성된 디렉토리와 그 직전의 디렉토리내의 summary.json 파일의 내용을 비교한다. 오늘 테스트 결과를 report.md에 반영한다. '''
 		if os.path.isdir(targetFolder_path) == True:
 	
@@ -83,7 +83,7 @@ def main ():
 							difference.append("+"+str(targetFolder_json["summary"][i] - lastTargetFolder_json["summary"][i]))
 					else:
 							difference.append(str(targetFolder_json["summary"][i] - lastTargetFolder_json["summary"][i]))
-
+							
 			# report.md에 오늘 daily test의 값과 지난번 테스트와의 반영한다.
 			for i in range(len(lines)):
 				if (i >= daily_test_result_start_line) and (i <= daily_test_result_end_line):

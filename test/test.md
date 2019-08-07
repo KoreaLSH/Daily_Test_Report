@@ -24,5 +24,5 @@ _ | [fog-debug-linux] | [edge-debug-linux] | [cluster-debug-linux] |
 `diff` |+6|NULL|+1
 `nolst` |0|NULL|0
 
-[qa.machbase.com](http://intra.machbase.com:7070)
+[qa.machbase.com](http://qa.machbase.com)
 

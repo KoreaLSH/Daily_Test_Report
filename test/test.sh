@@ -7,12 +7,12 @@ export HOME=/home/qa
 
 today=$(date +"%y-%m-%d")
 
-python $HOME/work/report/report.py
+python $HOME/work/report/test.py
 
-ref=`python $HOME/work/report/report.py`
+ref=`python $HOME/work/report/test.py`
 
 if [ $ref="TEST" ]; then
-	pandoc $HOME/work/report/report.md -f markdown -t html -s -o $HOME/work/report/$today.html
+	pandoc $HOME/work/report/test.md -f markdown -t html -s -o $HOME/work/report/$today.html
 	mutt -s "$today Daily Test Report" -e "set content_type=text/html" machintern@gmail.com < $HOME/work/report/$today.html
 else # $ref = "NOTEST"
 	mutt -s "$today Daily Test Report" -e "set content_type=text/html" machintern@gmail.com < $HOME/work/report/notest.html
