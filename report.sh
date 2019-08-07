@@ -13,9 +13,9 @@ ref=`python $HOME/work/report/report.py`
 
 if [ $ref="TEST" ]; then
 	pandoc $HOME/work/report/report.md -f markdown -t html -s -o $HOME/work/report/$today.html
-	mutt -s "$today Daily Test Report" -e "set content_type=text/html" machintern@gmail.com < $HOME/work/report/$today.html
+	mutt -s "$today Daily Test Report" -e "set content_type=text/html" rndin@machbase.com < $HOME/work/report/$today.html
 else # $ref = "NOTEST"
-	mutt -s "$today Daily Test Report" -e "set content_type=text/html" machintern@gmail.com < $HOME/work/report/notest.html
+	mutt -s "$today Daily Test Report" -e "set content_type=text/html" rndin@machbase.com < $HOME/work/report/notest.html
 fi
 
 

@@ -3,7 +3,7 @@
 
 # Failed to get results of Daily Test 😞
 
-[qa.machbase.com](https://qa.machbase.com)
+[qa.machbase.com](http://intra.machbase.com:7070)
 
 
 
